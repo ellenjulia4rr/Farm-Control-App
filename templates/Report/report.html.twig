@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Relatórios {% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="background p-3">
+        <h1 class="fs-4 title"><i class="fas fa-chart-bar"></i> Relatórios</h1>
+        <div class="d-flex justify-content-between m-2">
+            <div class="card text-white bg-danger mb-3 flex-grow-1 m-1" style="max-width: 30rem;">
+                <div class="card-header">Bovinos abatidos:</div>
+                <div class="card-body">
+                    <h5 class="card-title"> {{ abattoirCount }} Bovino(s)</h5>
+                </div>
+            </div>
+            <div class="card text-bg-info text-white mb-3 flex-grow-1 m-1" style="max-width: 30rem;">
+                <div class="card-header">Leite Produzido por semana:</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ totalMilk }} Litros</h5>
+                </div>
+            </div>
+            <div class="card text-bg-warning text-white mb-3 flex-grow-1 m-1" style="max-width: 30rem;">
+                <div class="card-header">Quantidade de ração por semana:</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ necessaryFeed }}KG</h5>
+                </div>
+            </div>
+            <div class="card text-bg-light mb-3 flex-grow-1 m-1" style="max-width: 30rem;">
+                <div class="card-header">Gado com alto consumo:</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ totalCows}} Bovino(s)</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

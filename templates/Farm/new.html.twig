@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nova Fazenda{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div  class="d-flex flex-column background">
+        <div class="d-flex  justify-content-start m-3">
+            <h1 class="title fs-3"><i class="fa-solid fa-plus"></i>
+                Nova Fazenda
+            </h1>
+        </div>
+        <div class="m-3">
+            {{ include('/Farm/_form.html.twig')}}
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ component('Select2', { id: 'farm_veterinarios', placeholder: 'Selecione o(s) veterinário(s)'}) }}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2>Gados Abatidos</h2>
+    <ul>
+        {% for cow in cows %}
+            <li>{{ cow.code }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

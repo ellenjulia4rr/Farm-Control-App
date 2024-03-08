@@ -1,0 +1,10 @@
+<script>
+    $(document).ready(function() {
+        $('#{{ id }}').select2({
+            theme: "bootstrap",
+            {% if placeholder is defined %}
+            'placeholder': '{{ placeholder }}'
+            {% endif %}
+        });
+    })
+</script>

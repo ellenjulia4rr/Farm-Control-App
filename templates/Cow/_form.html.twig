@@ -1,0 +1,46 @@
+{{ form_start(form) }}
+
+    <div class="d-flex">
+        <div class="row w-100">
+            <div class="col-sm-4">
+                {{ form_label(form.code) }}
+                {{ form_widget(form.code) }}
+                {{ form_errors(form.code) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.birth) }}
+                {{ form_widget(form.birth) }}
+                {{ form_errors(form.birth) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.milk) }}
+                {{ form_widget(form.milk) }}
+                {{ form_errors(form.milk) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.portion) }}
+                {{ form_widget(form.portion) }}
+                {{ form_errors(form.portion) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.weight) }}
+                {{ form_widget(form.weight) }}
+                {{ form_errors(form.weight) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.farm) }}
+                {{ form_widget(form.farm) }}
+                {{ form_errors(form.farm) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-start mb-3 mt-4">
+        <button class="btn btn-primary btn-sm me-2" type="submit"> <i class="fa-solid fa-check"></i>
+            Salvar</button>
+        <a class="btn btn-outline-secondary btn-sm" href="{{ path('cows_index')}}"><i class="fa-solid fa-x"></i>
+            Cancelar</a>
+    </div>
+
+
+{{ form_end(form) }}

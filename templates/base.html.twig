@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/1444536e42.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{{ asset('bundles/knppaginator/css/app_knp_paginator.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" integrity="sha512-aD9ophpFQ61nFZP6hXYu4Q/b/USW7rpLCQLX6Bi0WJHXNO7Js/fUENpBQf/+P4NtpzNX0jSgR5zVvPOJp+W2Kg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.css" integrity="sha512-CbQfNVBSMAYmnzP3IC+mZZmYMP2HUnVkV4+PwuhpiMUmITtSpS7Prr3fNncV1RBOnWxzz4pYQ5EAGG4ck46Oig==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        {% block stylesheets %}
+            <style>
+                .title{
+                    font-family: 'Noto Serif', serif;
+                    color: #4b4a4a;
+                }
+
+                .select2-selection--multiple {
+                    display: flex!important;
+                    flex-direction: column-reverse!important;
+                }
+
+                .select2-selection__choice {
+                    margin-bottom: 10px!important;
+                }
+
+                body{
+                    font-family: 'Montserrat', sans-serif;
+                }
+
+                .filter {
+                    margin: 5px;
+                    background-color: #ececec;
+                    border-radius: 5px;
+                }
+
+                .count {
+                    width: 25px;
+                    height: 25px;
+                    background-color: #0d6efd;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #fff;
+                    font-size: 12px;
+                    font-weight: bold;
+                    margin-top: 10px;
+                }
+
+                .background{
+                    border: solid 1px #dbeafe;
+                    border-radius: 3px;
+                    padding: 10px;
+                    margin: 10px;
+                }
+
+                .flash-sucess{
+                    margin: 5px;
+                    border: 1px solid #badbcc;
+                    border-radius: 5px;
+                    width: 300px;
+                    min-height: 40px;
+                    padding: 10px;
+                    background-color: #d1e7dd;
+                    color: #0f5132;
+                    margin-bottom: 10px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    align-self: flex-start;
+                    margin-left: auto;
+                }
+
+            </style>
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+        <script>
+            $.fn.datepicker.dates['pt-br'] = {
+                days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+                daysMin: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sá"],
+                months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+                monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                today: "Hoje",
+                clear: "Limpar",
+                format: "dd/mm/yyyy",
+            };
+
+            $(document).ready(function() {
+                // you may need to change this code if you are not using Bootstrap Datepicker
+                $('.js-datepicker').datepicker({
+                    format: 'dd/mm/yyyy',
+                    inline: true,
+                    language: 'pt-br'
+                });
+            });
+
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $("#flash-sucess").fadeOut("slow");
+                },2000);
+            })
+        </script>
+    </head>
+    <body>
+        <header>
+
+            {% if form is defined %}
+                {% form_theme form 'bootstrap_5_layout.html.twig' %}
+            {% endif %}
+
+            <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+                <div class="container-fluid ">
+                    <a class="navbar-brand" href="#">Farm Control App</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('report') }}">Relatórios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('cows_index') }}">Bovinos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="{{ path('veterinarians_index') }}">Veterinários</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('farms_index') }}">Fazendas</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        {% for message in app.flashes('success') %}
+            <div id="flash-sucess" class="flash-sucess">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% block body %}{% endblock %}
+    </body>
+</html>

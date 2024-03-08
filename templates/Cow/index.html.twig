@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Regitro de Bovinos {% endblock %}
+
+{% block body %}
+    <div class="background p-3">
+        {{ parent() }}
+        <div class="d-flex justify-content-between align-items-center m-1">
+            <div class="d-flex align-items-center">
+                <div class="fs-4 title"> <i class="fa-solid fa-cow"></i> Regitro de Bovinos</div>
+                <div class="count ms-2 mb-2">{{ contagem }}</div>
+            </div>
+            <a class="btn btn-outline-primary btn-sm" style="text-decoration:none" href="{{ path('cow_create')}}">
+                Novo Bovino
+            </a>
+        </div>
+
+        <div class="p-3 filter">
+            <div class="py-1 text-muted h6"><i class="fa-solid fa-filter"></i> Filtrar por:</div>
+
+            <form class="w-100" method="post">
+                {{ form_widget(form._token) }}
+                <div class="row">
+                    <div class="col-sm-2">
+                        {{ form_label(form.code) }}
+                        {{ form_widget(form.code) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_label(form.milk) }}
+                        {{ form_widget(form.milk) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_label(form.portion) }}
+                        {{ form_widget(form.portion) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_label(form.weight) }}
+                        {{ form_widget(form.weight) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_label(form.live) }}
+                        {{ form_widget(form.live) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_label(form.birth) }}
+                        {{ form_widget(form.birth)}}
+                    </div>
+                    <div class="col-sm-2 mt-4">
+                        {{ form_label(form.farms) }}
+                        {{ form_widget(form.farms) }}
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btn-sm"> <i class="fa-solid fa-magnifying-glass"></i>
+                        Buscar </button>
+                    <a href="{{ path('cows_index') }}" class="btn btn-outline-secondary btn-sm ms-2"> <i class="fa-solid fa-eraser"></i>
+                        Limpar</a>
+                </div>
+            </form>
+        </div>
+
+        <table class="table table-striped mt-5">
+            <thead>
+            <tr>
+                <th>Código</th>
+                <th>Situação</th>
+                <th  title="Leite Produzido semanalmente">Leite Produzido</th>
+                <th  title="Ração ingerida semanalmente">Ração</th>
+                <th>Peso</th>
+                <th>Data de Nascimento</th>
+                <th>Fazenda</th>
+                <th>Opções</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for cow in pagination %}
+                <tr>
+                    <td>{{ cow.code }}</td>
+                    <td class="{% if cow.live %}text-success{% else %}text-danger{% endif %}">
+                        {{ cow.live ? 'Vivo' : 'Abatido' }}
+                    </td>
+                    <td>{{ cow.milk }}L</td>
+                    <td>{{ cow.portion}}KG</td>
+                    <td>{{ cow.weight }}KG</td>
+                    <td>{{ cow.birth | date('d/m/Y') }}</td>
+                    <td>{{ cow.farm.nome }}</td>
+                    <td>
+                        <a href="{{ path("cow_edit", {id: cow.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        {% if cow.checksCattleForSlaughter() %}
+                        <a class="text-danger" href="{{ path("cows_slaughter", {cow: cow.id}) }}"><i class="fa-solid fa-xmark"></i> Abater</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-end">
+            <nav aria-label="Page  navigation ">
+                <ul class="pagination ">
+                    {{ knp_pagination_render(pagination) }}
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ component('Select2', { id: 'cow_filter_farms', placeholder: 'Selecione a(s) Fazenda(s)'}) }}
+{% endblock %}
+

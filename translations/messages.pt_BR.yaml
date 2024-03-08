@@ -1,0 +1,30 @@
+# translations/messages.pt_BR.yaml
+
+knp_paginator:
+  page:
+    number: 'Número'
+    next: 'Próximo'
+    prev: 'Anterior'
+    first: 'Primeiro'
+    last: 'Último'
+  pagination:
+    first: 'Primeiro'
+    previous: 'Anterior'
+    next: 'Próximo'
+    last: 'Último'
+    current: 'Página atual %current_page%, páginas %num_pages%'
+    total: 'Mostrando <b>%count%</b> de <b>%total%</b> itens'
+  sortable:
+    sort: 'Ordenar'
+    sortAsc: 'Clique para ordenar crescentemente'
+    sortDesc: 'Clique para ordenar decrescentemente'
+  thSortable:
+    sort: 'Clique para ordenar'
+    sortAsc: 'Clique para ordenar crescentemente'
+    sortDesc: 'Clique para ordenar decrescentemente'
+  short:
+    items: '<info>%items%</info> <comment>itens</comment>'
+    showing:
+      - 'Mostrando <comment>%start%</comment> - <comment>%end%</comment> de <comment>%total%</comment> <comment>itens</comment>'
+      - 'Mostrando <comment>%start%</comment> - <comment>%end%</comment> de <comment>%total%</comment> <comment>item</comment>'
+      - 'Mostrando <comment>%items%</comment> <comment>itens</comment>'

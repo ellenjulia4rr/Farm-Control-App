@@ -1,0 +1,32 @@
+{{ form_start(form) }}
+    <div class="d-flex">
+        <div class="row w-100">
+            <div class="col-sm-4">
+                {{ form_label(form.nome) }}
+                {{ form_widget(form.nome) }}
+                {{ form_errors(form.nome) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.tamanho) }}
+                {{ form_widget(form.tamanho) }}
+                {{ form_errors(form.tamanho) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_label(form.responsavel) }}
+                {{ form_widget(form.responsavel) }}
+                {{ form_errors(form.responsavel) }}
+            </div>
+            <div class="col-sm-4 mt-2">
+                {{ form_label(form.veterinarios) }}
+                {{ form_widget(form.veterinarios) }}
+                {{ form_errors(form.veterinarios) }}
+             </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-start mb-3 mt-4">
+        <button class="btn btn-primary btn-sm me-2" type="submit"> <i class="fa-solid fa-check"></i>
+            Salvar</button>
+        <a class="btn btn-outline-secondary btn-sm" href="{{ path('farms_index')}}"><i class="fa-solid fa-x"></i>
+            Cancelar</a>
+    </div>
+{{ form_end(form) }}

@@ -1,0 +1,25 @@
+{{ form_start(form) }}
+    <div class="d-flex">
+        <div class="row w-100">
+            <div class="col-sm-6">
+                {{ form_label(form.nome) }}
+                {{ form_widget(form.nome) }}
+                {{ form_errors(form.nome) }}
+            </div>
+            <div class="col-sm-3">
+                {{ form_label(form.crmv) }}
+                {{ form_widget(form.crmv) }}
+                {{ form_errors(form.crmv) }}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-start mb-3 mt-4">
+        <button class="btn btn-primary btn-sm me-2" type="submit"> <i class="fa-solid fa-check"></i>
+            Salvar</button>
+        <a class="btn btn-outline-secondary btn-sm" href="{{ path('veterinarians_index')}}"><i class="fa-solid fa-x"></i>
+            Cancelar</a>
+    </div>
+
+{{ form_end(form) }}
+
+
