@@ -15,7 +15,7 @@ class VeterinarianType extends AbstractType
             ->add('nome', TextType::class, [
                 'label' => 'Nome',
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Nome'],
-                'required' => true
+                'required' => false
             ])
             ->add('crmv', TextType::class, [
                 'label' => 'Código do Veterinário',

@@ -49,58 +49,74 @@ class CowController extends AbstractController
     #[Route('/new', name: 'cow_create')]
     public function newAction(Request $request, CowService $cowService) : array | RedirectResponse
     {
-        $newCow = new Cow();
-        $form = $this->createForm(CowType::class, $newCow);
-        $form->handleRequest($request);
+        try {
+            $newCow = new Cow();
+            $form = $this->createForm(CowType::class, $newCow);
+            $form->handleRequest($request);
 
-        if (
-            $form->isSubmitted() and
-            $form->isValid() and
-            $cowService->validatesCattleRegitration($newCow, $form)
-        ) {
-            $newCow->setLive(true);
-            $cowService->saveCow($newCow);
-            $this->addFlash('success', 'Bovino cadastrado com sucesso');
+            if (
+                $form->isSubmitted() and
+                $form->isValid() and
+                $cowService->validatesCattleRegitration($newCow, $form)
+            ) {
+                $newCow->setLive(true);
+                $cowService->saveCow($newCow);
+                $this->addFlash('success', 'Bovino cadastrado com sucesso');
 
-            return $this->redirectToRoute('cows_index');
+                return $this->redirectToRoute('cows_index');
+            }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao tentar adicionar novo bovino');
         }
+
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     #[Template('Cow/edit.html.twig')]
-    #[Route('/{id}/edit', name: 'cow_edit')]
-    public function editAction(EntityManagerInterface $em, Request $request, $id, CowService $cowService): array | RedirectResponse
+    #[Route('/{cow}/edit', name: 'cow_edit')]
+    public function editAction(EntityManagerInterface $em, Request $request, Cow $cow, CowService $cowService): array | RedirectResponse
     {
-        $cow = $em->getRepository(Cow::class)->find($id);
+        try {
+            $cow = $em->getRepository(Cow::class)->find($cow);
 
-        $form = $this->createForm(CowType::class, $cow);
-        $form->handleRequest($request);
+            $form = $this->createForm(CowType::class, $cow);
+            $form->handleRequest($request);
 
-        if (
-            $form->isSubmitted() and
-            $form->isValid() and
-            $cowService->validatesCattleRegitration($cow, $form)
-        ) {
-            $cow->setLive(true);
-            $cowService->saveCow($cow);
-            $this->addFlash('success', 'Bovino editado com sucesso');
+            if (
+                $form->isSubmitted() and
+                $form->isValid() and
+                $cowService->validatesCattleRegitration($cow, $form)
+            ) {
+                $cow->setLive(true);
+                $cowService->saveCow($cow);
+                $this->addFlash('success', 'Bovino editado com sucesso');
 
-            return $this->redirectToRoute('cows_index');
+                return $this->redirectToRoute('cows_index');
+            }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao tentar editar o bovino');
         }
+
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     #[Route('/{cow}/delete', name: 'cow_delete')]
     public function deleteAction(CowService $cowService, Cow $cow): Response
     {
-        $cowService->deleteCow($cow);
-        $this->addFlash('success', 'Bovino deletado com sucesso');
 
-        return $this->redirectToRoute('cows_index');
+        try {
+            $cowService->deleteCow($cow);
+            $this->addFlash('success', 'Bovino deletado com sucesso');
+
+            return $this->redirectToRoute('cows_index');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao tentar deletar o bovino');
+            return new  RedirectResponse($this->generateUrl('cows_index'));
+        }
     }
 
     #[Template('Cow/slaughter.html.twig')]

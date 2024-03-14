@@ -25,7 +25,7 @@ class CowType extends AbstractType
             ->add('milk', NumberType::class, [
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Leite produzido por semana'],
                 'label' => 'Leite',
-                'required' => true
+                'required' => false
             ])
             ->add('portion', NumberType::class, [
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Ração ingerida por semana'],
@@ -49,7 +49,7 @@ class CowType extends AbstractType
             ->add('farm', EntityType::class, [
                 'class' => Farm::class,
                 'choice_label' => 'nome',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control'
                 ],

@@ -12,11 +12,17 @@
             </h1>
         </div>
         <div class="m-3">
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
             {{ include('/Farm/_form.html.twig')}}
         </div>
     </div>
 
 {% endblock %}
+
 {% block javascripts %}
     {{ component('Select2', { id: 'farm_veterinarios', placeholder: 'Selecione o(s) veterinário(s)'}) }}
 {% endblock %}

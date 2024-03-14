@@ -86,8 +86,8 @@
                     <td>{{ cow.birth | date('d/m/Y') }}</td>
                     <td>{{ cow.farm.nome }}</td>
                     <td>
-                        <a href="{{ path("cow_edit", {id: cow.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        {% if cow.checksCattleForSlaughter() %}
+                        <a href="{{ path("cow_edit", {cow: cow.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        {% if cow.live and cow.checksCattleForSlaughter() %}
                         <a class="text-danger" href="{{ path("cows_slaughter", {cow: cow.id}) }}"><i class="fa-solid fa-xmark"></i> Abater</a>
                         {% endif %}
                     </td>

@@ -34,26 +34,60 @@
                 </div>
             </form>
         </div>
-        <table class="table table-striped mt-5">
-            <thead>
-            <tr>
-                <th>Nome do Veterinário</th>
-                <th>CRMV</th>
-                <th>Opções</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for form in pagination %}
+        <div class="table-responsive">
+            <table class="table table-striped mt-5">
+                <thead>
                 <tr>
-                    <td>{{ form.nome }}</td>
-                    <td>{{ form.crmv }}</td>
-                    <td>
-                        <a href="{{ path("veterinarian_edit", {id: form.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                    </td>
+                    <th>Nome do Veterinário</th>
+                    <th>CRMV</th>
+                    <th>Opções</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for form in pagination %}
+                    <tr>
+                        <td>{{ form.nome }}</td>
+                        <td> {{ form.crmv }}</td>
+                        <td class="text-right">
+                            <a href="{{ path("veterinarian_edit", {veterinarian: form.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="{{ path("veterinarian_delete",{veterinarian: form.id}) }}"><i class="fa-solid fa-trash delete-btn" veterinario="{{ form.id }}"></i></a>
+                            <div id="{{ form.id }}" class="modal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Confirmação de Exclusão</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            Tem certeza que deseja deletar o veterinário?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="{{ path('veterinarians_index') }}" class="btn btn-outline-secondary">
+                                                <i class="fa-solid fa-xmark"></i> Cancelar</a>
+                                            <a href="{{ path('veterinarian_delete', {'veterinarian': form.id}) }}" class="btn btn-danger">
+                                                <i class="fa-solid fa-trash"></i> Deletar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+{% endblock %}
 
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.delete-btn').on('click', e => {
+                e.preventDefault()
+                console.log(e.target)
+                const id = $(e.target).attr('veterinario')
+                const modal = document.getElementById(id)
+                $(modal).modal('show')
+            })
+        });
+    </script>
 {% endblock %}

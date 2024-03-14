@@ -81,11 +81,12 @@ class CowRepository extends ServiceEntityRepository
             ->setParameter('farm', $cow->getFarm())
             ->setParameter('code', $cow->getCode())
             ->setParameter('live', true)
-            ->setParameter('id', $cow->getId())
+            ->setParameter('id', $cow->getId()?:0)
             ;
 
         return $qb
             ->getQuery()
+            ->setMaxResults(1)
             ->getOneOrNullResult();
 
     }

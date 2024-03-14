@@ -22,7 +22,7 @@ class FarmType extends AbstractType
             ->add('tamanho', NumberType::class, [
                 'label' => 'Tamanho:',
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Tamanho em Hecteres'],
-                'required' => true
+                'required' => false
             ])
             ->add('responsavel', TextType::class, [
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Responsável'],

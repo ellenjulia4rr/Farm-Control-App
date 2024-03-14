@@ -48,27 +48,31 @@ class VeterinarianController extends AbstractController
     #[Route('/new', name: 'veterinarian_create')]
     public function newAction(EntityManagerInterface $em, Request $request, VeterinarianRepository $repository): array | RedirectResponse
     {
-        $novoVeterinario = new Veterinarian();
-        $form = $this->createForm(VeterinarianType::class, $novoVeterinario);
-        $form->handleRequest($request);
+        try {
+            $novoVeterinario = new Veterinarian();
+            $form = $this->createForm(VeterinarianType::class, $novoVeterinario);
+            $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-            $dbVeterinarian = $repository->findOneBy([
-                'crmv' => $novoVeterinario->getCrmv()
-            ]);
+            if($form->isSubmitted() && $form->isValid()) {
+                $dbVeterinarian = $repository->findOneBy([
+                    'crmv' => $novoVeterinario->getCrmv()
+                ]);
 
-            if($dbVeterinarian) {
-                $form->get('crmv')->addError(new FormError('Já existe um veterinário cadastrado com esse CRMV'));
-                return [
-                    'form' => $form->createView()
-                ];
+                if($dbVeterinarian) {
+                    $form->get('crmv')->addError(new FormError('Já existe um veterinário cadastrado com esse CRMV'));
+                    return [
+                        'form' => $form->createView()
+                    ];
+                }
+
+                $em->persist($novoVeterinario);
+                $em->flush();
+                $this->addFlash('success', 'Veterinário cadastrado com sucesso');
+
+                return $this->redirectToRoute('veterinarians_index');
             }
-
-            $em->persist($novoVeterinario);
-            $em->flush();
-            $this->addFlash('success', 'Veterinário cadastrado com sucesso');
-
-            return $this->redirectToRoute('veterinarians_index');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao tentar adicionar novo veterinário');
         }
 
         return [
@@ -77,28 +81,32 @@ class VeterinarianController extends AbstractController
     }
 
     #[Template('Veterinarian/edit.html.twig')]
-    #[Route('/{id}/edit', name: 'veterinarian_edit')]
-    public function editAction(EntityManagerInterface $em, Request $request, $id, VeterinarianRepository $repository): array | RedirectResponse
+    #[Route('/{veterinarian}/edit', name: 'veterinarian_edit')]
+    public function editAction(EntityManagerInterface $em, Request $request, Veterinarian $veterinarian, VeterinarianRepository $repository): array | RedirectResponse
     {
-        $veterinario = $em->getRepository(Veterinarian::class)->find($id);
+        try {
+            $veterinario = $em->getRepository(Veterinarian::class)->find($veterinarian);
 
-        $form = $this->createForm(VeterinarianType::class, $veterinario);
-        $form->handleRequest($request);
+            $form = $this->createForm(VeterinarianType::class, $veterinario);
+            $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+            if($form->isSubmitted() && $form->isValid()) {
 
-            $dbVeterinarian = $repository->getCrmvAndId($veterinario);
+                $dbVeterinarian = $repository->getCrmvAndId($veterinario);
 
-            if($dbVeterinarian) {
-                $form->get('crmv')->addError(new FormError('Já existe um veterinário cadastrado com esse CRMV'));
-                return [
-                    'form' => $form->createView()
-                ];
+                if($dbVeterinarian) {
+                    $form->get('crmv')->addError(new FormError('Já existe um veterinário cadastrado com esse CRMV'));
+                    return [
+                        'form' => $form->createView()
+                    ];
+                }
+                $em->flush();
+                $this->addFlash('success', 'Veterinário editado com sucesso');
+
+                return $this->redirectToRoute('veterinarians_index');
             }
-            $em->flush();
-            $this->addFlash('success', 'Veterinário editado com sucesso');
-
-            return $this->redirectToRoute('veterinarians_index');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao tentar editar veterinário!');
         }
 
         return [
@@ -107,13 +115,14 @@ class VeterinarianController extends AbstractController
     }
 
     #[Route('/{veterinarian}/delete', name: 'veterinarian_delete')]
-    public function deleteAction(EntityManagerInterface $em, Veterinarian $veterinarian): Response
+    public function deleteAction(EntityManagerInterface $em, Veterinarian $veterinarian): RedirectResponse
     {
-        $em->remove($veterinarian);
-        $em->flush();
-        $this->addFlash('success', 'Veterinário deletado com sucesso');
 
-        return $this->redirectToRoute('veterinarians_index');
+            $em->remove($veterinarian);
+            $em->flush();
+            $this->addFlash('success', 'Veterinário deletado com sucesso');
+
+            return $this->redirectToRoute('veterinarians_index');
 
     }
 }

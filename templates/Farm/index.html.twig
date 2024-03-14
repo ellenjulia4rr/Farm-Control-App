@@ -63,7 +63,7 @@
                     <td>{{ form.tamanho }}</td>
                     <td>{{ form.responsavel }}</td>
                     <td>
-                        <a href="{{ path("farm_edit", {id: form.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="{{ path("farm_edit", {farm: form.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
                 </tr>
             {% endfor %}

@@ -54,23 +54,26 @@ class FarmController extends AbstractController
         $form = $this->createForm(FarmType::class, $novaFazenda);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-            $dbFarm = $repository->findOneBy([
-                'nome' => $novaFazenda->getNome()
-            ]);
+        try {
+            if($form->isSubmitted() && $form->isValid()) {
+                $dbFarm = $repository->findOneBy([
+                    'nome' => $novaFazenda->getNome()
+                ]);
 
-            if($dbFarm) {
-                $form->get('nome')->addError(new FormError('Já existe uma fazenda cadastrada com esse Nome'));
-                return [
-                    'form' => $form->createView()
-                ];
+                if($dbFarm) {
+                    $form->get('nome')->addError(new FormError('Já existe uma fazenda cadastrada com esse Nome'));
+                    return [
+                        'form' => $form->createView()
+                    ];
+                }
+                $em->persist($novaFazenda);
+                $em->flush();
+                $this->addFlash('success', 'Fazenda cadastrada com sucesso');
+
+                return $this->redirectToRoute('farms_index');
             }
-
-            $em->persist($novaFazenda);
-            $em->flush();
-            $this->addFlash('success', 'Fazenda cadastrada com sucesso');
-
-            return $this->redirectToRoute('farms_index');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao tentar cadastrar a fazenda!');
         }
 
         return [
@@ -79,29 +82,33 @@ class FarmController extends AbstractController
     }
 
     #[Template('Farm/edit.html.twig')]
-    #[Route('/{id}/edit', name: 'farm_edit')]
-    public function editAtion(EntityManagerInterface $em, Request $request, $id, FarmRepository $repository) : array | RedirectResponse
+    #[Route('/{farm}/edit', name: 'farm_edit')]
+    public function editAtion(EntityManagerInterface $em, Request $request, Farm $farm, FarmRepository $repository) : array | RedirectResponse
     {
-        $fazenda = $em->getRepository(Farm::class)->find($id);
 
-        $form = $this->createForm(FarmType::class, $fazenda);
-        $form->handleRequest($request);
+        try {
+            $fazenda = $em->getRepository(Farm::class)->find($farm);
 
-        if($form->isSubmitted() && $form->isValid()) {
+            $form = $this->createForm(FarmType::class, $fazenda);
+            $form->handleRequest($request);
 
-            $dbFarm = $repository->getnameAndId($fazenda);
+            if($form->isSubmitted() && $form->isValid()) {
 
-            if($dbFarm) {
-                $form->get('nome')->addError(new FormError('Já existe uma fazenda cadastrada com essa nome'));
-                return [
-                    'form' => $form->createView()
-                ];
+                $dbFarm = $repository->getnameAndId($fazenda);
+
+                if($dbFarm) {
+                    $form->get('nome')->addError(new FormError('Já existe uma fazenda cadastrada com essa nome'));
+                    return [
+                        'form' => $form->createView()
+                    ];
+                }
+                $em->flush();
+                $this->addFlash('success', 'Fazenda editada com sucesso');
+
+                return $this->redirectToRoute('farms_index');
             }
-
-            $em->flush();
-            $this->addFlash('success', 'Fazenda editada com sucesso');
-
-            return $this->redirectToRoute('farms_index');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao tentar editar fazenda');
         }
 
         return [
@@ -112,11 +119,16 @@ class FarmController extends AbstractController
     #[Route('/{farm}/delete', name: 'farm_delete')]
     public function deleteAction(EntityManagerInterface $em, Farm $farm) : Response
     {
-        $em->remove($farm);
-        $em->flush();
-        $this->addFlash('success', 'Fazenda deletada com sucesso');
+        try {
+            $em->remove($farm);
+            $em->flush();
+            $this->addFlash('success', 'Fazenda deletada com sucesso');
 
-        return $this->redirectToRoute('farms_index');
+            return $this->redirectToRoute('farms_index');
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao tentar deletar o fazenda');
+            return new  RedirectResponse($this->generateUrl('farms_index'));
+        }
 
     }
 

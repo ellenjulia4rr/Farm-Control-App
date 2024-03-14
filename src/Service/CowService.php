@@ -22,12 +22,11 @@ class CowService
     {
         $fazenda = $cow->getFarm();
         $birth = $cow->getBirth();
-
         $animalPerHectare = 18;
         $totalCows = $this->em->getRepository(Cow::class)->count(['farm' => $fazenda, 'live' => true]);
         $farmSize = $fazenda->getTamanho();
-
         $spaceAvailable = $farmSize * $animalPerHectare - $totalCows;
+
 
         if($spaceAvailable <= 0) {
             $form->get('farm')->addError(new FormError('A fazenda não tem espaço para mais animais.'));
@@ -41,7 +40,6 @@ class CowService
         }
 
         $getAnimalByCode = $this->cowRepository->getCattleId($cow);
-
         if($getAnimalByCode) {
             $form->get('code')->addError(new FormError('Já existe um animal vivo com esse código nessa fazenda.'));
             return false;
