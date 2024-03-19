@@ -117,12 +117,14 @@ class VeterinarianController extends AbstractController
     #[Route('/{veterinarian}/delete', name: 'veterinarian_delete')]
     public function deleteAction(EntityManagerInterface $em, Veterinarian $veterinarian): RedirectResponse
     {
-
+        try {
             $em->remove($veterinarian);
             $em->flush();
+
             $this->addFlash('success', 'Veterinário deletado com sucesso');
-
+        }catch (\Exception $exception) {
+            $this->addFlash('error', 'Ocorreu um erro ao deletar o veterinário');
+        }
             return $this->redirectToRoute('veterinarians_index');
-
     }
 }

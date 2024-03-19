@@ -59,6 +59,20 @@
             </form>
         </div>
 
+        <div class="mt-2">
+            {% for flash_message in app.flashes('success') %}
+                <div id="flash-sucess" class="alert alert-success">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+
+            {% for flash_message in app.flashes('error') %}
+                <div id="flash-sucess" class="alert alert-danger">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+        </div>
+
         <table class="table table-striped mt-5">
             <thead>
             <tr>
@@ -77,8 +91,10 @@
             {% for cow in pagination %}
                 <tr>
                     <td>{{ cow.code }}</td>
-                    <td class="{% if cow.live %}text-success{% else %}text-danger{% endif %}">
-                        {{ cow.live ? 'Vivo' : 'Abatido' }}
+                    <td>
+                         <span class="badge {% if cow.live %}text-bg-success{% else %}text-bg-danger{% endif %}">
+                            {{ cow.live ? 'Vivo' : 'Abatido' }}
+                        </span>
                     </td>
                     <td>{{ cow.milk }}L</td>
                     <td>{{ cow.portion}}KG</td>
@@ -86,10 +102,24 @@
                     <td>{{ cow.birth | date('d/m/Y') }}</td>
                     <td>{{ cow.farm.nome }}</td>
                     <td>
-                        <a href="{{ path("cow_edit", {cow: cow.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        {% if cow.live and cow.checksCattleForSlaughter() %}
-                        <a class="text-danger" href="{{ path("cows_slaughter", {cow: cow.id}) }}"><i class="fa-solid fa-xmark"></i> Abater</a>
-                        {% endif %}
+                        <div class="dropdown">
+                            <a class="btn btn-light dropdown-toggle btn-custom" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Opções
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{{ path("cow_edit", {cow: cow.id}) }}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item delete-btn" href="{{ path('cow_delete', {cow: cow.id})}}"><i class="fa-solid fa-trash" cow="{{ cow.id }}"></i> Deletar</a>
+                                </li>
+                                {% if cow.live and cow.checksCattleForSlaughter() %}
+                                    <li>
+                                        <a class="dropdown-item abate-btn" href="#" data-confirm="{{ path("cows_slaughter", {cow: cow.id})}}"><i class="fa-solid fa-xmark" cow="{{ cow.id }}"></i> Abater</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
@@ -107,6 +137,33 @@
     </div>
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
+    {%include 'components/sweetalert2.html.twig' %}
     {{ component('Select2', { id: 'cow_filter_farms', placeholder: 'Selecione a(s) Fazenda(s)'}) }}
+
+    <script>
+        $(document).ready(function () {
+            $('.abate-btn').on('click', function (e) {
+                e.preventDefault()
+
+                const deleteUrl = $(this).data('confirm');
+
+                Swal.fire({
+                    title: "Confirmação de Abate",
+                    text: "Tem certeza que deseja abater o animal?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sim, tenho certeza!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = deleteUrl
+                    }
+                })
+            })
+        })
+    </script>
 {% endblock %}
 

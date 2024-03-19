@@ -7,6 +7,7 @@ use App\Filters\FarmFilter;
 use App\Forms\FarmType;
 use App\Forms\Filters\FarmFilterType;
 use App\Repository\FarmRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Env\Response;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -117,19 +118,17 @@ class FarmController extends AbstractController
     }
 
     #[Route('/{farm}/delete', name: 'farm_delete')]
-    public function deleteAction(EntityManagerInterface $em, Farm $farm) : Response
+    public function deleteAction(EntityManagerInterface $em, Farm $farm) : RedirectResponse
     {
         try {
             $em->remove($farm);
             $em->flush();
-            $this->addFlash('success', 'Fazenda deletada com sucesso');
 
-            return $this->redirectToRoute('farms_index');
-        } catch (\Exception $exception) {
-            $this->addFlash('error', 'Ocorreu um erro ao tentar deletar o fazenda');
-            return new  RedirectResponse($this->generateUrl('farms_index'));
+            $this->addFlash('success', 'Fazenda deletada com sucesso');
+        } catch (ForeignKeyConstraintViolationException $exception) {
+            $this->addFlash('error', 'Não foi possível excluir a fazenda porque existem bovinos associados a ela. ');
         }
 
+        return $this->redirectToRoute('farms_index');
     }
-
 }

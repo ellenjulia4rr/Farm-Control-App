@@ -17,53 +17,82 @@
                 </a>
             </div>
         </div>
-    <div class="p-3 filter">
-        <div class="py-1 text-muted h6"><i class="fa-solid fa-filter"></i> Filtrar por:</div>
-        <form class="w-100" method="post">
-            {{ form_widget(form._token) }}
-            <div class="row">
-                <div class="col-sm-3">
-                    {{ form_label(form.nome) }}
-                    {{ form_widget(form.nome) }}
+
+        <div class="p-3 filter">
+            <div class="py-1 text-muted h6"><i class="fa-solid fa-filter"></i> Filtrar por:</div>
+            <form class="w-100" method="post">
+                {{ form_widget(form._token) }}
+                <div class="row">
+                    <div class="col-sm-3">
+                        {{ form_label(form.nome) }}
+                        {{ form_widget(form.nome) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_label(form.tamanho) }}
+                        {{ form_widget(form.tamanho) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_label(form.responsavel) }}
+                        {{ form_widget(form.responsavel) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_label(form.veterinarios) }}
+                        {{ form_widget(form.veterinarios) }}
+                    </div>
                 </div>
-                <div class="col-sm-3">
-                    {{ form_label(form.tamanho) }}
-                    {{ form_widget(form.tamanho) }}
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="submit" class="btn btn-primary bnt-rounded btn-sm"> <i class="fa-solid fa-magnifying-glass"></i>
+                        Buscar </button>
+                    <a href="{{ path('farms_index') }}" class="btn btn-outline-secondary btn-sm bnt-rounded ms-2"> <i class="fa-solid fa-eraser"></i>
+                        Limpar</a>
                 </div>
-                <div class="col-sm-3">
-                    {{ form_label(form.responsavel) }}
-                    {{ form_widget(form.responsavel) }}
+            </form>
+        </div>
+
+        <div class="mt-2">
+            {% for flash_message in app.flashes('success') %}
+                <div id="flash-sucess" class="alert alert-success">
+                    {{ flash_message }}
                 </div>
-                <div class="col-sm-3">
-                    {{ form_label(form.veterinarios) }}
-                    {{ form_widget(form.veterinarios) }}
+            {% endfor %}
+
+            {% for flash_message in app.flashes('error') %}
+                <div id="flash-sucess" class="alert alert-danger">
+                    {{ flash_message }}
                 </div>
-            </div>
-            <div class="d-flex justify-content-end mt-3">
-                <button type="submit" class="btn btn-primary bnt-rounded btn-sm"> <i class="fa-solid fa-magnifying-glass"></i>
-                    Buscar </button>
-                <a href="{{ path('farms_index') }}" class="btn btn-outline-secondary btn-sm bnt-rounded ms-2"> <i class="fa-solid fa-eraser"></i>
-                    Limpar</a>
-            </div>
-        </form>
-    </div>
+            {% endfor %}
+        </div>
+
         <table class="table table-striped mt-5">
             <thead>
             <tr>
-                <th>Nome da Fazenda</th>
-                <th>Tamanho</th>
-                <th>Responsável</th>
-                <th>Opções</th>
+                <th class="col">Nome da Fazenda</th>
+                <th class="col">Tamanho</th>
+                <th class="col">Responsável</th>
+                <th class="col text-end pe-5">Opções</th>
             </tr>
             </thead>
             <tbody>
             {% for form in pagination %}
                 <tr>
-                    <td>{{ form.nome }}</td>
-                    <td>{{ form.tamanho }}</td>
-                    <td>{{ form.responsavel }}</td>
-                    <td>
-                        <a href="{{ path("farm_edit", {farm: form.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <td class="col">{{ form.nome }}</td>
+                    <td class="col">{{ form.tamanho }}</td>
+                    <td class="col">{{ form.responsavel }}</td>
+                    <td class="col text-end pe-3">
+                        <div>
+                            <a class="btn btn-light dropdown-toggle btn-custom" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Opções
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="{{ path("farm_edit", {farm: form.id}) }}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item delete-btn" href="{{ path('farm_delete', {farm: form.id}) }}" class="delete-btn">
+                                        <i class="fa-solid fa-trash" fazenda="{{ form.id }}"></i> Deletar</a>
+                                </li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
@@ -71,6 +100,9 @@
         </table>
     </div>
 {% endblock %}
+
 {% block javascripts %}
+    {{ parent() }}
+    {%include 'components/sweetalert2.html.twig' %}
     {{ component('Select2', { id: 'farm_filter_veterinarios', placeholder: 'Selecione o(s) veterinário(s)'}) }}
 {% endblock %}
