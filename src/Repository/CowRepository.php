@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cow;
+use App\Enum\StatusClattle;
 use App\Filters\CowFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -166,7 +167,7 @@ class CowRepository extends ServiceEntityRepository
                     ->getCode());
         }
 
-        if ($filter->getLive() === 'ABATE') {
+        if ($filter->getLive() === StatusClattle::ABATE) {
             $qb->andWhere(
                 $qb->expr()->orX(
                     'cows.birth < :age',
@@ -181,11 +182,11 @@ class CowRepository extends ServiceEntityRepository
                 ->andWhere('cows.live = true')
                 ->setParameter('age', $bitth->format('Y-m-d'));
 
-        } elseif ($filter->getLive() === 'VIVO') {
+        } elseif ($filter->getLive() === StatusClattle::VIVO) {
             $qb->andWhere('cows.live = :vivo')
                 ->setParameter('vivo', true);
 
-        } elseif ($filter->getLive() === 'MORTO') {
+        } elseif ($filter->getLive() === StatusClattle::MORTO) {
             $qb->andWhere('cows.live = :morto')
                 ->setParameter('morto', false);
         }

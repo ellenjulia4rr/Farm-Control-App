@@ -3,6 +3,7 @@
 namespace App\Forms\Filters;
 
 use App\Entity\Farm;
+use App\Enum\StatusClattle;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -40,16 +41,16 @@ class CowFilterType extends AbstractType
                 'required' => false,
                 'choices' => [
                     'Todos' => null,
-                    'Bovinos Vivos' => 'VIVO',
-                    'Bovinos Abatidos' => 'MORTO',
-                    'Bovinos para Abate' => 'ABATE'
+                    'Bovinos Vivos' => StatusClattle::VIVO,
+                    'Bovinos Abatidos' => StatusClattle::MORTO,
+                    'Bovinos para Abate' => StatusClattle::ABATE
                 ],
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Situação',
                 'choice_label' => function ($value, $key, $index) {
                     return $key;
                 },
-                'data' => 'VIVO',
+                'data' => StatusClattle::VIVO,
             ])
             ->add('birth', DateType::class, [
                 'widget' => 'single_text',
