@@ -66,7 +66,7 @@ class FarmRepository extends ServiceEntityRepository
                 ->setParameter('responsavel', "%{$filter->getResponsavel()}%")
             ;
 
-        if($filter->getVeterinarios())
+        if($filter->getVeterinarios()->count())
             $qb
                 ->join('farms.veterinarios', 'veterinarios')
                 ->andWhere('veterinarios.id IN (:id)')
