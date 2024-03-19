@@ -16,11 +16,11 @@ class FarmRepository extends ServiceEntityRepository
         parent::__construct($registry, Farm::class);
     }
 
-    public function getFarmsByFilter(FarmFilter $filter): Query
+    public function getFarmsByFilter(FarmFilter $filter): array
     {
-        $qb = $this->getQueryBuilderByFilter($filter);
+        $qb =$this->getQueryBuilderByFilter($filter);
 
-        return $qb->getQuery();
+        return $qb->getQuery()->getResult();
     }
 
     public function getCountFarmsByFilter(FarmFilter $filter) : array
@@ -44,33 +44,33 @@ class FarmRepository extends ServiceEntityRepository
     }
 
 
-    private function getQueryBuilderByFilter(FarmFilter $filter) :QueryBuilder
+    private function getQueryBuilderByFilter(FarmFilter $filter): QueryBuilder
     {
         $qb = $this->createQueryBuilder('farms');
 
         if($filter->getNome())
             $qb
                 ->andWhere('farms.nome LIKE :nome')
-                ->setParameter('nome', "%{$filter->setNome()}%")
+                ->setParameter('nome', "%{$filter->getNome()}%")
             ;
 
-        if ($filter->getTamanho())
+        if($filter->getTamanho())
             $qb
-                ->andWhere('farms.tamanho >= :tamanho')
-                ->setParameter('tamanho', "%{$filter->getTamanho()}%")
+                ->andWhere('farms.tamanho = :tamanho')
+                ->setParameter('tamanho', $filter->getTamanho())
             ;
 
-        if ($filter->getResponsavel())
+        if($filter->getResponsavel())
             $qb
                 ->andWhere('farms.responsavel LIKE :responsavel')
-                ->setParameter('responsavel', "%{$filter->setResponsavel()}%")
+                ->setParameter('responsavel', "%{$filter->getResponsavel()}%")
             ;
 
-        if ($filter->getVeterinarios())
-                $qb
-                    ->join('farms.veterinarios', 'veterinarians')
-                    ->andWhere('farms.id IN (:id)')
-                    ->setParameter('id', $filter->getVeterinarios()->toArray())
+        if($filter->getVeterinarios())
+            $qb
+                ->join('farms.veterinarios', 'veterinarios')
+                ->andWhere('veterinarios.id IN (:id)')
+                ->setParameter('id', $filter->getVeterinarios()->toArray())
             ;
 
         return $qb;

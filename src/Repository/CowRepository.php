@@ -163,8 +163,7 @@ class CowRepository extends ServiceEntityRepository
 
         if ($filter->getCode()) {
             $qb->andWhere('cows.code = :code')
-                ->setParameter('code', $filter
-                    ->getCode());
+                ->setParameter('code', $filter->getCode());
         }
 
         if ($filter->getLive() === StatusClattle::ABATE) {

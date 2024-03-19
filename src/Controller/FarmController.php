@@ -27,14 +27,14 @@ class FarmController extends AbstractController
     #[Route('/', name: 'farms_index')]
     public function indexAction(EntityManagerInterface $em, Request $request, PaginatorInterface $paginator, FarmRepository $farmRepository): array
     {
-        $filter = new  FarmFilter();
+        $filter = new FarmFilter();
         $form = $this->createForm(FarmFilterType::class, $filter);
         $form->handleRequest($request);
 
         $fazendas = $em->getRepository(Farm::class)->getFarmsByFilter($filter);
         $countFarms = $farmRepository->getCountFarmsByFilter($filter);
 
-        $paginatio = $paginator->paginate(
+        $pagination = $paginator->paginate(
             $fazendas,
             $request->query->getInt('page', 1),
             10
@@ -43,7 +43,7 @@ class FarmController extends AbstractController
         return [
             'form' => $form->createView(),
             'contagem' => $countFarms[0]['qtde'],
-            'pagination' => $paginatio
+            'pagination' => $pagination
         ];
     }
 
