@@ -6,6 +6,11 @@ RUN apt-get update && \
     apt-get install -y libicu-dev && \
     docker-php-ext-install pdo_mysql intl
 
+RUN apt-get install -y \
+        zip \
+        unzip \
+    && rm -rf /var/lib/apt/lists/*
+
 # Habilitar o módulo Apache mod_rewrite para permitir URLs amigáveis
 RUN a2enmod rewrite
 

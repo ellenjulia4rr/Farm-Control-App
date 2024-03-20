@@ -16,13 +16,13 @@
             <div class="card text-bg-info text-white mb-3 flex-grow-1 m-1" style="max-width: 30rem;">
                 <div class="card-header">Leite Produzido por semana:</div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ totalMilk }} Litros</h5>
+                    <h5 class="card-title">{{ totalMilk | number_format(2, ',', '.') }} Litros</h5>
                 </div>
             </div>
             <div class="card text-bg-warning text-white mb-3 flex-grow-1 m-1" style="max-width: 30rem;">
                 <div class="card-header">Quantidade de ração por semana:</div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ necessaryFeed }}KG</h5>
+                    <h5 class="card-title">{{ necessaryFeed | number_format(2, ',', '.') }}KG</h5>
                 </div>
             </div>
             <div class="card text-bg-light mb-3 flex-grow-1 m-1" style="max-width: 30rem;">

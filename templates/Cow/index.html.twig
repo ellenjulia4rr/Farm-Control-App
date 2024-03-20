@@ -96,9 +96,9 @@
                             {{ cow.live ? 'Vivo' : 'Abatido' }}
                         </span>
                     </td>
-                    <td>{{ cow.milk }}L</td>
-                    <td>{{ cow.portion}}KG</td>
-                    <td>{{ cow.weight }}KG</td>
+                    <td>{{ cow.milk | number_format(2, ',', '.') }}L</td>
+                    <td>{{ cow.portion | number_format(2, ',', '.') }}KG</td>
+                    <td>{{ cow.weight | number_format(2, ',', '.') }}KG</td>
                     <td>{{ cow.birth | date('d/m/Y') }}</td>
                     <td>{{ cow.farm.nome }}</td>
                     <td>

@@ -14,17 +14,17 @@
             </div>
             <div class="col-sm-4">
                 {{ form_label(form.milk) }}
-                {{ form_widget(form.milk) }}
+                {{ form_widget(form.milk, {'attr': {'class': 'formatted-field'}}) }}
                 {{ form_errors(form.milk) }}
             </div>
             <div class="col-sm-4">
                 {{ form_label(form.portion) }}
-                {{ form_widget(form.portion) }}
+                {{ form_widget(form.portion, {'attr': {'class': 'formatted-field'}}) }}
                 {{ form_errors(form.portion) }}
             </div>
             <div class="col-sm-4">
                 {{ form_label(form.weight) }}
-                {{ form_widget(form.weight) }}
+                {{ form_widget(form.weight, {'attr': {'class': 'formatted-field'}}) }}
                 {{ form_errors(form.weight) }}
             </div>
             <div class="col-sm-4">
@@ -42,5 +42,13 @@
             Cancelar</a>
     </div>
 
+<script>
+    $(document).ready(function() {
+        $('.formatted-field').mask('#0.00', {
+            reverse: true,
+            placeholder: "0.00"
+        })
+    })
+</script>
 
 {{ form_end(form) }}

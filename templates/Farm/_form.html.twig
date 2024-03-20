@@ -8,7 +8,7 @@
             </div>
             <div class="col-sm-4">
                 {{ form_label(form.tamanho) }}
-                {{ form_widget(form.tamanho) }}
+                {{ form_widget(form.tamanho, {'attr': {'class': 'formatted-field'}}) }}
                 {{ form_errors(form.tamanho) }}
             </div>
             <div class="col-sm-4">
@@ -29,4 +29,13 @@
         <a class="btn btn-outline-secondary btn-sm" href="{{ path('farms_index')}}"><i class="fa-solid fa-x"></i>
             Cancelar</a>
     </div>
+
+<script>
+    $(document).ready(function() {
+        $('.formatted-field').mask('#0.00', {
+            reverse: true,
+            placeholder: "0.00"
+        })
+    })
+</script>
 {{ form_end(form) }}

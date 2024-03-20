@@ -76,7 +76,7 @@
             {% for form in pagination %}
                 <tr>
                     <td class="col">{{ form.nome }}</td>
-                    <td class="col">{{ form.tamanho }}</td>
+                    <td class="col">{{ form.tamanho | number_format(2, ',', '.')}} Ha</td>
                     <td class="col">{{ form.responsavel }}</td>
                     <td class="col text-end pe-3">
                         <div>

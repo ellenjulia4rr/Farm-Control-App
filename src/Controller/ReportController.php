@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 
 
-#[Route('/Report')]
+#[Route('/')]
 class ReportController extends AbstractController
 {
     #[Template('Report/report.html.twig')]
